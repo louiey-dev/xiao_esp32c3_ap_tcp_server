@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../../esp/esp-idf"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"bsp_uart.h": "c"
+		}
+	}
+}
