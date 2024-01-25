@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../esp/esp-idf"
+		}
+	],
+	"settings": {
+		"dotnet.defaultSolution": "disable",
+		"files.associations": {
+			"*.tcc": "c"
+		}
+	}
+}

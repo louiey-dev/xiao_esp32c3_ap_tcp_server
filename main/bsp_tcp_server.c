@@ -50,7 +50,18 @@ static void do_retransmit(const int sock)
         } else {
             rx_buffer[len] = 0; // Null-terminate whatever is received and treat it like a string
             ESP_LOGI(TAG, "Received %d bytes: %s", len, rx_buffer);
-
+            
+            if(strcmp(rx_buffer, "rtc_init") == 0)
+            {
+                // read rtc and print
+                bsp_rtc_pcf8563_init(0);
+                ESP_LOGI(TAG, "RTC Init");
+            }
+            else if(strcmp(rx_buffer, "rtc_read") == 0)
+            {
+                // read rtc and print
+                bsp_rtc_pcf8563_hctosys();
+            }
 #if 0
             // send() can return less bytes than supplied length.
             // Walk-around for robust implementation.

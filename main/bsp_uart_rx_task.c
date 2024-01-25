@@ -18,8 +18,9 @@ static void uart_event_task(void *pvParameters)
     uart_event_t event;
     size_t buffered_size;
     uint8_t* dtmp = (uint8_t*) malloc(UART_RX_BUF_SIZE);
-    const char* strTx = "\nESP32C3 UART event task started\n";
-    bsp_uart_send(strTx, strlen(strTx));
+    
+    // const char* strTx = "\nESP32C3 UART event task started\n";
+    // bsp_uart_send(strTx, strlen(strTx));
 
     for(;;) {
         //Waiting for UART event.

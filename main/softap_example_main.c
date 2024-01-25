@@ -105,4 +105,10 @@ void app_main(void)
     //
     bsp_uart_init(UART_NUM_0);
     bsp_uart_rx_task_init();
+
+    //
+    bsp_periodic_task_init();
+
+    //
+    //cli_task_init();
 }
