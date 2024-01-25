@@ -4,26 +4,26 @@
 # Wi-Fi SoftAP tcp server Example
 
 This example shows how to use the Wi-Fi SoftAP functionality of the Wi-Fi driver of ESP for serving as an Access Point.
-And tcp_server feature is running with esp32ap@telesemi, ap ip is 192.168.4.1
+And tcp_server feature is running with myssid@mypassword, ap ip is 192.168.4.1
 
 ## How to use example
 
-Connect to esp32ap@telesemi
-send data via tcp_client
-You can see data received
+Connect to myssid@mypassword</br>
+send data via tcp_client</br>
+You can see data received</br>
 
 
 ### Build and Flash
 
-cd /home/louiey/esp/esp-idf
+cd /home/louiey/esp/esp-idf </br>
 source ./export.sh
 
-// go to project folder
-cd /home/louiey/Work/ESP32C3/xiao_esp32c3_ap_tcp_server
-idf.py set-target esp32c3
-idf.py menuconfig
-idf.py build
-idfx flash COM5
+// go to project folder </br>
+cd /home/louiey/Work/ESP32C3/xiao_esp32c3_ap_tcp_server </br>
+idf.py set-target esp32c3 </br>
+idf.py menuconfig </br>
+idf.py build </br>
+idfx flash COM5 </br>
 
 ![Alt text](xiao-c3.jpg)
 
