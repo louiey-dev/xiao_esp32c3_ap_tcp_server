@@ -12,6 +12,22 @@ Connect to myssid@mypassword</br>
 send data via tcp_client</br>
 You can see data received</br>
 
+## Feature
+- tcp_server
+  - tcp_server_task
+    - receive/send data to/from client
+    - need to implement handler in do_retransmit()
+- periodic task
+  - periodic_task() is running periodically
+  - implement what you need here
+- RTC PCF8563
+  - Xiao expansion board includes RTC, PCF8563
+  - driver for RTC
+- uart_rx
+  - uart receive thread
+  - implement uart data handler in uart_event_task()
+  - you can send data via uart, bsp_uart_send()
+
 
 ### Build and Flash
 
@@ -35,6 +51,6 @@ See the Getting Started Guide for all the steps to configure and use the ESP-IDF
 
 ## Troubleshooting
 
-Whenever client connected at first time, it disconnected soon. Not sure why...
-After reconnect, usually I see working with normal
-Will update when I fix/find root cause.
+Whenever client connected at first time, it disconnected soon. Not sure why...</br>
+After reconnect, usually I see working with normal</br>
+Will update when I fix/find root cause.</br>
