@@ -6,6 +6,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+#include "esp_log.h"
+
 #define SPAN_OF(x)      (sizeof (x) / (sizeof (x[0])))
 #define INC_MOD(i, m)   (((i)>=((m)-1)) ? (0) : ((i)+1))
 
@@ -14,6 +16,9 @@
 
 /* Make sure that the CLI can still work when DEBUG is off */
 #define CLI_PRINT(x)   printf x
+
+
+// #define CLI_LOG(y, ...) ESP_LOGI("cli", y)
 
 ///////////////////////////////////////////////
 typedef signed char         int8;
@@ -59,9 +64,9 @@ extern char* pPromptInUse;
 /*****************************************************************************/
 
 void cliRegisterTable(char *, char *, int, CliJte *);
-void cliInitialise(void);
 void cliTask(void *pvParameters);
 void cliExit(void);
+void cliInit(void);
 
 /* The following functions are for Logging output to a file. The primary reason
 ** for adding this functionality is so that WinBatch can read responces from
@@ -69,8 +74,11 @@ void cliExit(void);
 ** until the application is closed.
 */
 
-void CLI_LOG(char *string, ...);
+// void CLI_LOG(char *string, ...);
 void cliCommandsInitialise (void);
 void cliFinaliseLogFile(void);
+
+void cliLineParser(char* str);
+
 #endif
 

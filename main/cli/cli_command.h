@@ -9,3 +9,7 @@
 #define CLI_CMD_LOG             (CLI_CMD_OFFSET + 6)
 #define CLI_CMD_DISPLAY         (CLI_CMD_OFFSET + 7)
 #define CLI_CMD_ECHO            (CLI_CMD_OFFSET + 8)
+
+#define CLI_CMD_RTC_INIT        (CLI_CMD_OFFSET + 20)
+#define CLI_CMD_RTC_SET         (CLI_CMD_OFFSET + 21)
+#define CLI_CMD_RTC_GET         (CLI_CMD_OFFSET + 22)

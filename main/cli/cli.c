@@ -67,6 +67,12 @@ static char* pProgramName = "Cli Sample code";
 /********************************************************************/
 /*                   					            */
 /********************************************************************/
+void cliInit(void)
+{
+    pTableInUse = pTableCli;
+	pPromptInUse = pTableCli;
+    cliCommandsInitialise();
+}
 
 /****************************************************************************
 * PARAMETERS:      Name          Name under which to register table.
@@ -95,13 +101,13 @@ void cliRegisterTable(char *name, char *help, int numberInTable, CliJte *table)
 
     if (cliRootNode.numberInNextLevel >= CLI_MAX_COMMANDS)
     {
-        CLI_LOG( "Out of space in command table.\n" );
+        ESP_LOGI("cli", "Out of space in command table.\n" );
         return;
     }
 
     if (cliFindCommand(name, &cliRootNode) != NULL)
     {
-        CLI_LOG ("Table '%s' registered twice.\n", name );
+        ESP_LOGI("cli", "Table '%s' registered twice.\n", name );
         return;
     }
 
@@ -175,7 +181,7 @@ static Bool cliGetStringAndTokenise( char *string, CliJte *node )
     char* context = NULL;
 
     /* Ask for string and Wait. */
-    CLI_LOG( "%s> ", string );
+    ESP_LOGI("cli", "%s> ", string );
 
     /* Fix for bug 1305 */
     memset(line, 0x00, sizeof(line));
@@ -185,7 +191,7 @@ static Bool cliGetStringAndTokenise( char *string, CliJte *node )
     {
         return TRUE;
     }
-	CLI_LOG("\n");
+	ESP_LOGI("cli", "\n");
 
     /* Parse string. */
     if ( line[0]=='\n' || line[0]=='\r' ) return FALSE;
@@ -234,7 +240,7 @@ static Bool cliGetStringAndTokenise( char *string, CliJte *node )
     {
         if (!cliParseTokens(node, tokens, tokenCount))
         {
-            CLI_LOG( "Unrecognised command, try '?' for help\n" );
+            ESP_LOGI("cli", "Unrecognised command, try '?' for help\n" );
         }
     }
 
@@ -268,7 +274,7 @@ static Bool cliParseTokens(CliJte *jte, char **tokens, int tokenCount)
             if (tokenCount == 1)
             {
                 /* No sub-tokens. All done. Open a new command shell. */
-				CLI_LOG("Type '.' to exit, or '?' for local help\n");
+				ESP_LOGI("cli", "Type '.' to exit, or '?' for local help\n");
                 while ( !cliGetStringAndTokenise(command->name, command) );
                 result = TRUE;
             }
@@ -284,11 +290,11 @@ static Bool cliParseTokens(CliJte *jte, char **tokens, int tokenCount)
             /* Function. Check the number of tokens/arguments against the function. */
             if ((command->argCount < 0) && (tokenCount < -command->argCount))
             {
-				CLI_LOG("Not enough arguments; at least %d required.\n", (-command->argCount) - 1);
+				ESP_LOGI("cli", "Not enough arguments; at least %d required.\n", (-command->argCount) - 1);
             }
             else if ((command->argCount > 0) && (tokenCount != command->argCount))
             {
-				CLI_LOG("Incorrect number of arguments.\n");
+				ESP_LOGI("cli", "Incorrect number of arguments.\n");
             }
             else
             {
@@ -381,12 +387,12 @@ static void cliHelp (CliJte* jte)
         // Print name, args and help.
         if (pPromptInUse == pPromptDVB)
         {
-            CLI_LOG ("%-25s", jte->name);
+            ESP_LOGI("cli", "%-25s", jte->name);
         }
         else
 #endif
         {
-            CLI_LOG ("%-14s", jte->name);
+            ESP_LOGI("cli", "%-14s", jte->name);
         }
 
         if (jte->args != 0)
@@ -394,23 +400,23 @@ static void cliHelp (CliJte* jte)
 #ifdef DVB_SUPPORTED
             if (pPromptInUse == pPromptDVB)
             {
-                CLI_LOG ("[%s]\n%-25s", jte->args, "");
+                ESP_LOGI("cli", "[%s]\n%-25s", jte->args, "");
             }
             else
 #endif
             {
-                CLI_LOG ("[%s]\n%-14s", jte->args, "");
+                ESP_LOGI("cli", "[%s]\n%-14s", jte->args, "");
             }
         }
 
         if (jte->help == 0)
         {
             // No help.
-            CLI_LOG( "no help\n" );
+            ESP_LOGI("cli", "no help\n" );
         }
         else
         {
-            CLI_LOG( "%s\n", jte->help );
+            ESP_LOGI("cli", "%s\n", jte->help );
         }
     }
 
@@ -421,7 +427,7 @@ static void cliHelp (CliJte* jte)
         {
             cliHelp(&jte->nextLevel[i]);
         }
-        CLI_LOG ("\n");
+        ESP_LOGI("cli", "\n");
     }
 }
 
@@ -441,9 +447,100 @@ void cliExit(void)
     cliQuit = TRUE;
 }
 
-void CLI_LOG(char *string, ...)
+// void CLI_LOG(char *string, ...)
+// {
+//     va_list arg_list;
+//     va_start(arg_list, string);
+    
+//     HAL_printf_valist(string, arg_list);
+//     va_end(arg_list);
+// }
+
+static Bool cliTokeniseLine(char* str, CliJte* node)
 {
-    va_list arg_list;
-    va_start(arg_list,string);
-    vfprintf(stdout, string, arg_list);
+    static char  line[CLI_MAX_COMMAND_LINE + 1];
+    static char* tokens[CLI_MAX_TOKENS];
+    static int   tokenCount;
+    size_t       length;
+    Bool         inQuotes = FALSE;
+    char* context = NULL;
+
+    /* Fix for bug 1305 */
+    memset(line, 0x00, sizeof(line));
+
+    length = strlen(str);
+    memcpy(line, str, length);
+
+    /* Parse string. */
+    if (line[0] == '\n' || line[0] == '\r') return FALSE;
+    if (line[0] == '.') return TRUE;
+
+    /* Single help. */
+    if (line[0] == '?')
+    {
+        cliHelp(node);
+        return FALSE;
+    }
+
+    /* Tokenise the line. */
+    tokenCount = 0;
+    tokens[0] = strtok_r(line, cliWhiteSpace, &context);
+    while (tokens[tokenCount])
+    {
+        if (tokenCount++ == CLI_MAX_TOKENS)
+        {
+            tokenCount = 0;
+            break;
+        }
+
+        if (*(tokens[tokenCount - 1] + strlen(tokens[tokenCount - 1]) + 1) == '"')
+        {
+            inQuotes = TRUE;
+        }
+        else
+        {
+            inQuotes = FALSE;
+        }
+
+        if (inQuotes)
+        {
+            /* Uses the last known string. Dodgy stuff. */
+            tokens[tokenCount] = strtok_r(NULL, cliWhiteNoSpace, &context);
+        }
+        else
+        {
+            /* Uses the last known string. Dodgy stuff. */
+            tokens[tokenCount] = strtok_r(NULL, cliWhiteSpace, &context);
+        }
+    }
+
+    if (tokenCount > 0)
+    {
+        if (!cliParseTokens(node, tokens, tokenCount))
+        {
+            ESP_LOGI("cli", "Unrecognised command, try '?' for help\n");
+        }
+    }
+
+    return FALSE;
+}
+
+void cliLineParser(char* str)
+{
+    CliJte* pNode;
+    Bool result;
+    int len = strlen(str);
+
+    // ESP_LOGI("cli_p", "%s\n", str);
+
+    // for(int i = 0; i < len; i++)
+    // {
+    //     printf("[%d] %c\n", i, str[i]);
+    // }
+
+    pNode = cliFindCommand(pTableCli, &cliRootNode);
+    if (pNode != NULL)
+    {
+        result = cliTokeniseLine(str, pNode);
+    }
 }

@@ -28,7 +28,7 @@ esp_err_t PCF8563_Write(uint8_t addr, uint8_t *data, size_t count) {
 	esp_err_t ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 	last_i2c_err = ret;
-	ESP_LOGI(TAG, "last_i2c_err %d\n", last_i2c_err);
+	// ESP_LOGI(TAG, "last_i2c_err %d\n", last_i2c_err);
     return ret;
 }
 
@@ -49,7 +49,7 @@ esp_err_t PCF8563_Read(uint8_t addr, uint8_t *data, size_t count) {
 	esp_err_t ret = i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 	last_i2c_err = ret;
-	ESP_LOGI(TAG, "last_i2c_err %d\n", last_i2c_err);
+	// ESP_LOGI(TAG, "last_i2c_err %d\n", last_i2c_err);
     return ret;
 }
 
@@ -363,16 +363,16 @@ int bsp_rtc_pcf8563_init(uint8_t mode)
 		}
 		rtcIsInit = true;
 
-		PCF_DateTime date = {0};
-		date.year = 2024;
-		date.month = 1;
-		date.weekday = 2;
-		date.day = 3;
-		date.hour = 10;
-		date.minute = 20;
-		date.second = 30;
+		// PCF_DateTime date = {0};
+		// date.year = 2024;
+		// date.month = 1;
+		// date.weekday = 2;
+		// date.day = 3;
+		// date.hour = 10;
+		// date.minute = 20;
+		// date.second = 30;
 
-		bsp_rtc_pcf8563_set_date_time(&date);
+		// bsp_rtc_pcf8563_set_date_time(&date);
 	}
 	return 0;
 }

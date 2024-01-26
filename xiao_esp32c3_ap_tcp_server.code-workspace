@@ -13,7 +13,10 @@
 	"settings": {
 		"dotnet.defaultSolution": "disable",
 		"files.associations": {
-			"*.tcc": "c"
+			"*.tcc": "c",
+			"sstream": "c",
+			"regex": "c",
+			"string": "c"
 		}
 	}
 }

@@ -19,6 +19,7 @@
 #include "lwip/sys.h"
 
 #include "bsp.h"
+#include "cli/cli.h"
 
 /* The examples use WiFi configuration that you can set via project configuration menu.
 
@@ -111,4 +112,5 @@ void app_main(void)
 
     //
     //cli_task_init();
+    cliInit();
 }
