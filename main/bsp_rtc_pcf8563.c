@@ -339,7 +339,7 @@ int bsp_rtc_pcf8563_systohc(void)
 }
 
  /*!
-  @brief        Initialize RTC PCF8563
+  @brief        Initialize RTC PCF8563. Init I2C & INT mode
   @param[in]    mode : configure interrupt setting of RTC. normally use "0"
   @param[out]   
   @return       

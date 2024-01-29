@@ -100,6 +100,9 @@ void app_main(void)
     ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
     wifi_init_softap();
 
+    //
+    bsp_init(NULL);
+    
     /* Louie added here */
     bsp_tcp_server_task_init();
 

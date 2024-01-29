@@ -16,7 +16,9 @@
 			"*.tcc": "c",
 			"sstream": "c",
 			"regex": "c",
-			"string": "c"
+			"string": "c",
+			"bsp.h": "c",
+			"stdint.h": "c"
 		}
 	}
 }

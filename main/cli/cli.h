@@ -16,7 +16,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "esp_log.h"
+// #include "esp_log.h"
 
 #define SPAN_OF(x)      (sizeof (x) / (sizeof (x[0])))
 #define INC_MOD(i, m)   (((i)>=((m)-1)) ? (0) : ((i)+1))

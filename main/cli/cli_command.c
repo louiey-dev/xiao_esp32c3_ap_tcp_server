@@ -16,12 +16,17 @@
 #include <stdbool.h>
 #include "cli.h"
 #include "cli_command.h"
-
+#include "esp_log.h"
 #include "../bsp_rtc_pcf8563.h"
+
+#include "../bsp.h"
 
 #define CLI_VERSION_INFO 	"Xiao CLI Version 0.1"
 
 static Bool cliCommandInterpreter (int command, int argc, char** argv);
+static const char *TAG = "cli";
+
+extern BSP_ST g_Bsp;
 
 /**************************** PRIVATE FUNCTION DEFINITIONS *******************/
 static CliJte cliCommandTable [] =
@@ -53,6 +58,7 @@ static CliJte cliCommandTable [] =
       0,
       &cliCommandInterpreter
     },
+    /************ RTC *****************/
     { "rtc_init",
       NULL,
       "RTC initialize",
@@ -80,6 +86,28 @@ static CliJte cliCommandTable [] =
       0,
       &cliCommandInterpreter
     },
+    /*
+    */
+
+    /** Periodic Task **/
+    { "prd_set",
+      "prd_set 1000 // set 1000ms periodic task",
+      "Set PRD task period in ms",
+      CLI_CMD_PRD_SET_TICK,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "prd_get",
+      "prd_get",
+      "Get PRD task period in ms",
+      CLI_CMD_PRD_GET_TICK,
+      1,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
 };
 
 
@@ -98,7 +126,9 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
     Bool result = TRUE; // Assume that we are going to process the command
     
     int year, mon, day, wday, hour, min, sec;
-    
+    // uint8_t u8;
+    // uint16_t u16;
+
     // printf("cliCommandInterpreter cmd %d argc %d argv %s\n", command, argc, *argv);
 
     switch (command)
@@ -107,7 +137,7 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         break;
 		
         case CLI_CMD_VERSION:
-        ESP_LOGI("cli", "CLI Version %s\n", CLI_VERSION_INFO);
+        ESP_LOGI(TAG, "CLI Version %s", CLI_VERSION_INFO);
         break;
 
         case CLI_CMD_EXIT:
@@ -142,20 +172,30 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
 
 		    bsp_rtc_pcf8563_set_date_time(&date);
 
-        ESP_LOGI("cli", "RTC Set %04d-%02d-%02d, %02d:%02d:%02d\n", year, mon, day, hour, min, sec);
+        ESP_LOGI(TAG, "RTC Set %04d-%02d-%02d, %02d:%02d:%02d\n", year, mon, day, hour, min, sec);
         break;
 
         case CLI_CMD_RTC_GET:
         PCF_DateTime gdate = {0};
 
         bsp_rtc_pcf8563_get_date_time(&gdate);
-        ESP_LOGI("cli", "RTC Get %04d-%02d-%02d, %02d:%02d:%02d\n", gdate.year, gdate.month, gdate.day, gdate.hour, gdate.minute, gdate.second);
+        ESP_LOGI(TAG, "RTC Get %04d-%02d-%02d, %02d:%02d:%02d\n", gdate.year, gdate.month, gdate.day, gdate.hour, gdate.minute, gdate.second);
+        break;
+        /********************************************************/
+        //  PRD Command
+        case CLI_CMD_PRD_SET_TICK:
+        g_Bsp.prdTick = atoi(argv[1]);
+        ESP_LOGI(TAG, "Periodic tick set to %d ms", g_Bsp.prdTick);
+        break;
+
+        case CLI_CMD_PRD_GET_TICK:
+
         break;
         /********************************************************/
 
         default:
         // Unknown command! We should never get here...
-        ESP_LOGI("cli", "Unknown command, %d\n", command);
+        ESP_LOGI(TAG, "Unknown command, %d\n", command);
         result = FALSE;
         break;
     }

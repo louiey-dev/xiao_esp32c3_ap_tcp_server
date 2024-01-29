@@ -147,7 +147,7 @@ void bsp_uart_init(int num) {
 
 int bsp_uart_send(const char* data, int length)
 {
-    const int len = strlen(data);
+    // const int len = strlen(data);
     // const int txBytes = uart_write_bytes(UART_NUM_1, data, len);
     const int txBytes = uart_write_bytes(EX_UART_NUM, data, length);
     ESP_LOGI(TAG, "Wrote %d bytes", txBytes);

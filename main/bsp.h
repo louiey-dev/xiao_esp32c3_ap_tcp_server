@@ -16,7 +16,24 @@
 
 // #include "bsp_rtc_pcf8563.h"
 
+#define BSP_PRD_DEFAULT_TICK  1000
+
+
+typedef struct BSP_S
+{
+   bool isInit;
+
+   /* Periodic task related parameters */
+   int prdTick;    // in msec
+
+   /************************************/
+
+
+}BSP_ST;
+
 /********* APIs ******************************/
+int bsp_init(char* ptr);
+
 int cli_task_init(void);
 
 void bsp_tcp_server_task_init(void);

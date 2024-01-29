@@ -30,6 +30,8 @@
 
 static const char *TAG = "prd";
 
+extern BSP_ST g_Bsp;
+
 static void periodic_task(void *pvParameters)
 {
     int count = 0;
@@ -37,7 +39,7 @@ static void periodic_task(void *pvParameters)
     while (1)
     {
         ESP_LOGI(TAG, "PRD checking...%d", count++);
-        vTaskDelay(5000 / 10);
+        vTaskDelay(g_Bsp.prdTick / 10);
     }
 }
 
@@ -45,5 +47,5 @@ void bsp_periodic_task_init(void)
 {
     ESP_LOGI(TAG, "periodic_task start\n");
 
-    xTaskCreate(periodic_task, "periodic_task", 4096, (void*)AF_INET, 5, NULL);
+    xTaskCreate(periodic_task, "periodic_task", 2048, NULL, 5, NULL);
 }
