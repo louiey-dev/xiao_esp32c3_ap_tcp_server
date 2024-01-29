@@ -1,4 +1,14 @@
+/********************************************************************
 
+   Created     :   2024.01.29.
+
+   Author      : louiey.dev@gmail.com
+
+   Description :
+
+   History     :
+
+*********************************************************************/
 // CLI commands that are not DAB or DVB
 #define CLI_CMD_OFFSET          (0x100)
 #define CLI_CMD_EXIT            (CLI_CMD_OFFSET + 1)

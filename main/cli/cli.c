@@ -1,17 +1,14 @@
-/******************************************************************************
-	Created		:	2010/11/30
+/********************************************************************
 
-	Filename	: 	E:\Work\Siano_CLI_VS2010\SMS1530_Lite\SMS1530_Lite\Src\cli.c
+   Created     :   2024.01.29.
 
-	Author		:	louiey@siano-ms.com, Siano Mobile Silicon
+   Author      : louiey.dev@gmail.com
 
-	Description	:
+   Description :    Command Line Interface Main Code
 
-	History		:
+   History     :
 
-	Last Update	:
-
-******************************************************************************/
+*********************************************************************/
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_event.h"

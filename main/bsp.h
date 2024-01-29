@@ -1,11 +1,14 @@
-/*
- * @Author : Louiey. louiey.dev@gmail.com
- * @Date: 
- * @Description: 
- * @Last Modified time: 
- * @History: 
- 
- */
+/********************************************************************
+
+   Created     :   2024.01.29.
+
+   Author      : louiey.dev@gmail.com
+
+   Description :
+
+   History     :
+
+*********************************************************************/
 #include <string.h>
 #include <stdint.h>
 

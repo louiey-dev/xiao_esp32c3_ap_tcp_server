@@ -1,3 +1,14 @@
+/********************************************************************
+
+   Created     :   2024.01.29.
+
+   Author      : louiey.dev@gmail.com
+
+   Description :
+
+   History     :
+
+*********************************************************************/
 /* BSD Socket API Example
 
    This example code is in the Public Domain (or CC0 licensed, at your option.)
@@ -51,7 +62,7 @@ static void do_retransmit(const int sock)
             rx_buffer[len] = 0; // Null-terminate whatever is received and treat it like a string
             ESP_LOGI(TAG, "Received %d bytes: %s", len, rx_buffer);
             
-            rx_buffer[len] = '\n';
+            // rx_buffer[len] = '\n';
             tcp_msg_parser(rx_buffer, len);
 
             // if(strcmp(rx_buffer, "rtc_init") == 0)

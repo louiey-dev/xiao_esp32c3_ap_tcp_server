@@ -1,3 +1,14 @@
+/********************************************************************
+
+   Created     :   2024.01.29.
+
+   Author      : louiey.dev@gmail.com
+
+   Description :  command line interface command handler
+
+   History     :  // louiey, 2024.01.29. Basic code implemented
+
+*********************************************************************/
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -138,7 +149,7 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         PCF_DateTime gdate = {0};
 
         bsp_rtc_pcf8563_get_date_time(&gdate);
-        ESP_LOGI("cli", "RTC Get %04d-%02d-%02d, %02d:%02d:%02d\n", gdate.year, gdate.month, gdate.weekday, gdate.hour, gdate.minute, gdate.second);
+        ESP_LOGI("cli", "RTC Get %04d-%02d-%02d, %02d:%02d:%02d\n", gdate.year, gdate.month, gdate.day, gdate.hour, gdate.minute, gdate.second);
         break;
         /********************************************************/
 
