@@ -174,6 +174,25 @@ static CliJte cliCommandTable [] =
       &cliCommandInterpreter
     },
     ///////////////////////////////////////////////////
+    { "pwm_init",
+      NULL,
+      "PWM initialize",
+      CLI_CMD_PWM_INIT,
+      1,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "pwm_duty",
+      "pwm_duty 2048",
+      "PWM set duty value",
+      CLI_CMD_PWM_SET_DUTY,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    //////////////////////////////////////////////////////
 };
 
 
@@ -194,6 +213,7 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
     int year, mon, day, wday, hour, min, sec;
     uint8_t u8;
     uint16_t u16;
+    uint32_t u32;
 
     // printf("cliCommandInterpreter cmd %d argc %d argv %s\n", command, argc, *argv);
 
@@ -211,6 +231,7 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         cliExit ();
         break;
 
+#if 1
         /********************************************************/
         //  RTC Command
         case CLI_CMD_RTC_INIT:
@@ -247,6 +268,8 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         bsp_rtc_pcf8563_get_date_time(&gdate);
         ESP_LOGI(TAG, "RTC Get %04d-%02d-%02d, %02d:%02d:%02d\n", gdate.year, gdate.month, gdate.day, gdate.hour, gdate.minute, gdate.second);
         break;
+#endif
+#if 1
         /********************************************************/
         //  PRD Command
         case CLI_CMD_PRD_SET_TICK:
@@ -257,6 +280,8 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         case CLI_CMD_PRD_GET_TICK:
 
         break;
+#endif
+#if 1
         /********************************************************/
         /* LCD APIs */
         case CLI_CMD_LCD_INIT:
@@ -295,6 +320,19 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         u16 = strlen(argv[2]);
         bsp_lcd_ssd1306_write_text_page_x3(u8, argv[2], u16, 0);
         ESP_LOGI(TAG, "LCD write string...%s, %d", argv[2], u16);
+        break;
+#endif
+        /********************************************************/
+        /* PWM APIs */
+        case CLI_CMD_PWM_INIT:
+        bsp_buzzer_pwm_init();
+        ESP_LOGI(TAG, "Buzzer pwm initialize");
+        break;
+
+        case CLI_CMD_PWM_SET_DUTY:
+        u32 = (uint32_t)atoi(argv[1]);
+        bsp_buzzer_pwm_set_duty(u32);
+        ESP_LOGI(TAG, "Buzzer duty set to %d\n", (int)u32);
         break;
         /********************************************************/
         default:

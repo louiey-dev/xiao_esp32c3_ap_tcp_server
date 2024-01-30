@@ -10,6 +10,8 @@ idf_component_register(SRCS     "cli/cli.c"
                                 "bsp_periodic_task.c" 
                                 "bsp_tcp_msg_parser.c"
                                 "bsp.c"
+                                "bsp_gpio.c"
+                                "bsp_buzzer_pwm.c"
                     INCLUDE_DIRS "."
                     INCLUDE_DIRS "../"
                     )

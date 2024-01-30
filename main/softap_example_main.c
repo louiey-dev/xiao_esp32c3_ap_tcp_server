@@ -114,5 +114,8 @@ void app_main(void)
     bsp_periodic_task_init();
 
     //
+    bsp_gpio_init();
+    
+    //
     cliInit();
 }
