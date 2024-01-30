@@ -13,7 +13,7 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 
-static const char *TAG = "i2c-simple-example";
+// static const char *TAG = "i2c-simple-example";
 
 #define I2C_MASTER_SCL_IO           6                           /*!< GPIO number used for I2C master clock */
 #define I2C_MASTER_SDA_IO           5                           /*!< GPIO number used for I2C master data  */

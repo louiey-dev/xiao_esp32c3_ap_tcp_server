@@ -12,7 +12,7 @@
 #include "esp_system.h"
 #include "bsp_rtc_pcf8563.h"
 #include "driver/i2c.h"
-#include "timegm.h"
+#include "rtc/timegm.h"
 #include "esp_log.h"
 
 #include <stdlib.h>

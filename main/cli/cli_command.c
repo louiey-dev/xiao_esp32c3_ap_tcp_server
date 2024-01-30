@@ -108,6 +108,72 @@ static CliJte cliCommandTable [] =
       0,
       &cliCommandInterpreter
     },
+
+    /** LCD APIs **/
+    { "lcd_init",
+      NULL,
+      "LCD Initialize",
+      CLI_CMD_LCD_INIT,
+      1,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_ch",
+      "lcd_ch a // print ch",
+      "LCD print ch which is given",
+      CLI_CMD_LCD_WRITE_CHAR,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_str",
+      "lcd_str hello",
+      "LCD prints string",
+      CLI_CMD_LCD_WRITE_STR,
+      3,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_xy",
+      "lcd_xy 20 30",
+      "LCD set position with given x/y",
+      CLI_CMD_LCD_SET_X_Y,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_clear",
+      NULL,
+      "LCD clears all screen",
+      CLI_CMD_LCD_CLEAR,
+      1,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_page",
+      NULL,
+      "LCD clears given page",
+      CLI_CMD_LCD_CLEAR_PAGE,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    { "lcd_str3",
+      "lcd_str3 hello",
+      "LCD prints string with x3 font",
+      CLI_CMD_LCD_WRITE_STR_X3,
+      3,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
+    ///////////////////////////////////////////////////
 };
 
 
@@ -126,8 +192,8 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
     Bool result = TRUE; // Assume that we are going to process the command
     
     int year, mon, day, wday, hour, min, sec;
-    // uint8_t u8;
-    // uint16_t u16;
+    uint8_t u8;
+    uint16_t u16;
 
     // printf("cliCommandInterpreter cmd %d argc %d argv %s\n", command, argc, *argv);
 
@@ -192,7 +258,45 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
 
         break;
         /********************************************************/
+        /* LCD APIs */
+        case CLI_CMD_LCD_INIT:
+        bsp_lcd_ssd1306_init();
+        ESP_LOGI(TAG, "LCD init");
+        break;
 
+        case CLI_CMD_LCD_WRITE_CHAR:
+        
+        break;
+
+        case CLI_CMD_LCD_WRITE_STR:
+        u8 = atoi(argv[1]);
+        u16 = strlen(argv[2]);
+        bsp_lcd_ssd1306_write_text_page(u8, argv[2], u16, 0);
+        ESP_LOGI(TAG, "LCD write string...%s, %d", argv[2], u16);
+        break;
+
+        case CLI_CMD_LCD_SET_X_Y:
+
+        break;
+
+        case CLI_CMD_LCD_CLEAR:
+        bsp_lcd_ssd1306_clear();
+        ESP_LOGI(TAG, "LCD Clear");
+        break;
+
+        case CLI_CMD_LCD_CLEAR_PAGE:
+        u8 = atoi(argv[1]);
+        bsp_lcd_ssd1306_page_clear(u8);
+        ESP_LOGI(TAG, "LCD page %d clear", u8);
+        break;
+
+        case CLI_CMD_LCD_WRITE_STR_X3:
+        u8 = atoi(argv[1]);
+        u16 = strlen(argv[2]);
+        bsp_lcd_ssd1306_write_text_page_x3(u8, argv[2], u16, 0);
+        ESP_LOGI(TAG, "LCD write string...%s, %d", argv[2], u16);
+        break;
+        /********************************************************/
         default:
         // Unknown command! We should never get here...
         ESP_LOGI(TAG, "Unknown command, %d\n", command);

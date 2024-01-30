@@ -114,6 +114,5 @@ void app_main(void)
     bsp_periodic_task_init();
 
     //
-    //cli_task_init();
     cliInit();
 }

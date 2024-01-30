@@ -18,7 +18,9 @@
 			"regex": "c",
 			"string": "c",
 			"bsp.h": "c",
-			"stdint.h": "c"
+			"stdint.h": "c",
+			"freertos.h": "c",
+			"ssd1306.h": "c"
 		}
 	}
 }

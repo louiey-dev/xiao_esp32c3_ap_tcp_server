@@ -47,6 +47,13 @@ int bsp_uart_rx_task_init(void);
 int bsp_i2c_master_init(int master_num);
 
 void bsp_periodic_task_init(void);
+
+
+int bsp_lcd_ssd1306_init(void);
+int bsp_lcd_ssd1306_clear(void);
+int bsp_lcd_ssd1306_write_text_page(int page, char * text, int text_len, bool invert);
+int bsp_lcd_ssd1306_page_clear(int page);
+int bsp_lcd_ssd1306_write_text_page_x3(int page, char * text, int text_len, bool invert);
 /*********************************************/
 
 

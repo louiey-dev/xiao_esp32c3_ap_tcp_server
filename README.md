@@ -27,6 +27,10 @@ You can see data received</br>
   - uart receive thread
   - implement uart data handler in uart_event_task()
   - you can send data via uart, bsp_uart_send()
+- oled display
+  - lcd driver : ssd1306, 128x64 0.96"
+  - reference code from https://github.com/nopnop2002/esp-idf-ssd1306/tree/master
+  - 
 
 
 ### Build and Flash
