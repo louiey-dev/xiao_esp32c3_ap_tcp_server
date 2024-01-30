@@ -46,7 +46,7 @@ idf.py menuconfig </br>
 idf.py build </br>
 idfx flash COM5 </br>
 
-![Alt text](xiao-c3.jpg)
+![Alt text](xiao-esp32c3.jpg)
 
 See the Getting Started Guide for all the steps to configure and use the ESP-IDF to build projects.
 
