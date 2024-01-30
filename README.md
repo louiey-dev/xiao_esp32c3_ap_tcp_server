@@ -3,14 +3,22 @@
 
 # Wi-Fi SoftAP tcp server Example
 
-This example shows how to use the Wi-Fi SoftAP functionality of the Wi-Fi driver of ESP for serving as an Access Point.
-And tcp_server feature is running with myssid@mypassword, ap ip is 192.168.4.1
+This example shows how to use the Wi-Fi SoftAP functionality of the Wi-Fi driver of ESP for serving as an Access Point.</br>
+And tcp_server feature is running with myssid@mypassword, ap ip is 192.168.x.1</br>
+Actual IP address can be seen via console log</br>
+
 
 ## How to use example
 
 Connect to myssid@mypassword</br>
 send data via tcp_client</br>
-You can see data received</br>
+You can see data received via console</br>
+
+### How to use cli command
+You need connected tcp_client</br>
+In code, refer cli_command.c/h</br>
+You can get all the informations via "?"</br>
+
 
 ## Feature
 - tcp_server
@@ -34,7 +42,7 @@ You can see data received</br>
 - buzzer
 
 
-### Build and Flash
+## Build and Flash
 
 cd /home/louiey/esp/esp-idf </br>
 source ./export.sh
