@@ -18,7 +18,8 @@ You can see data received via console</br>
 You need connected tcp_client</br>
 In code, refer cli_command.c/h</br>
 You can get all the informations via "?"</br>
-
+ESP platform has an issue when user use gets API so cliTask cannot use here.</br>
+Instead of cliTask, calls cliLineParser to parse messages from wifi network.</br>
 
 ## Feature
 - tcp_server

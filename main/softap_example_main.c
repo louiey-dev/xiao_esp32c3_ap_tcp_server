@@ -116,7 +116,8 @@ void app_main(void)
     //
     bsp_gpio_init();
 
-    //
+    // ESP platform has problem at "gets" API so cannot use cli task
+    // Whenever gets message via network, now calls "cliLineParser" to parse message data
     cliInit();
     // cli_task_init();
 }
