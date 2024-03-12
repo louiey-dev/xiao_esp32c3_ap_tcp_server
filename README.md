@@ -40,7 +40,9 @@ You can get all the informations via "?"</br>
   - reference code from https://github.com/nopnop2002/esp-idf-ssd1306/tree/master
 - gpio interrupt
 - buzzer
-
+- user config menuconfig example configuration</br>
+![Alt text](menuconfig.png)
+</br>
 
 ## Build and Flash
 
