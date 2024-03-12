@@ -23,8 +23,8 @@
 #include "bsp.h"
 
 #define ESP_INTR_FLAG_DEFAULT   0
-#define GPIO_INPUT_IO_3         3
-#define GPIO_INPUT_PIN_SEL  (1ULL<<GPIO_INPUT_IO_3)
+#define EXT_INT_PORT         CONFIG_ESP_GPIO_IN_INT_PIN
+#define GPIO_INPUT_PIN_SEL  (1ULL<<EXT_INT_PORT)
 
 static const char *TAG = "gpio";
 static QueueHandle_t gpio_evt_queue = NULL;
@@ -61,17 +61,17 @@ int bsp_gpio_init(void)
     gpio_config(&io_conf);
 
     //change gpio interrupt type for one pin
-    gpio_set_intr_type(GPIO_INPUT_IO_3, GPIO_INTR_ANYEDGE);
+    gpio_set_intr_type(EXT_INT_PORT, GPIO_INTR_ANYEDGE);
 
     //install gpio isr service
     gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
     //hook isr handler for specific gpio pin
-    gpio_isr_handler_add(GPIO_INPUT_IO_3, gpio_isr_handler, (void*) GPIO_INPUT_IO_3);
+    gpio_isr_handler_add(EXT_INT_PORT, gpio_isr_handler, (void*) EXT_INT_PORT);
 
     //remove isr handler for gpio number.
-    gpio_isr_handler_remove(GPIO_INPUT_IO_3);
+    gpio_isr_handler_remove(EXT_INT_PORT);
     //hook isr handler for specific gpio pin again
-    gpio_isr_handler_add(GPIO_INPUT_IO_3, gpio_isr_handler, (void*) GPIO_INPUT_IO_3);
+    gpio_isr_handler_add(EXT_INT_PORT, gpio_isr_handler, (void*) EXT_INT_PORT);
 
 
     //create a queue to handle gpio event from isr

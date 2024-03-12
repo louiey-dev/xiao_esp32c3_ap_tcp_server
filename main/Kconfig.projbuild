@@ -11,6 +11,7 @@ menu "Example Configuration"
         default "mypassword"
         help
             WiFi password (WPA or WPA2) for the example to use.
+
     config ESP_WIFI_CHANNEL
         int "WiFi Channel"
         range 1 13
@@ -23,4 +24,47 @@ menu "Example Configuration"
         default 4
         help
             Max number of the STA connects to AP.
+
+    config ESP_PWM_BUZZER_PIN
+        int "PWM Buzzer output pin num"
+        default 5
+        help
+            Pwm buzzer control pin
+
+    config ESP_GPIO_IN_INT_PIN
+        int "GPIO interrupt input pin num"
+        default 3
+        help
+            GPIO external interrupt pin
+        
+    config ESP_UART_NUM
+        int "UART port num"
+        default 0
+        help
+            UART number
+
+    config ESP_UART_TXD_PIN
+        int "UART Tx pin num"
+        default 21
+        help
+            UART tx pin number
+
+    config ESP_UART_RXD_PIN
+        int "UART Rx pin num"
+        default 20
+        help
+            UART rx pin number
+
+    config ESP_I2C_SDA_PIN
+        int "I2C sda pin num"
+        default 6
+        help
+            i2c sda pin number
+
+    config ESP_I2C_SCL_PIN
+        int "I2C scl pin num"
+        default 7
+        help
+            i2c scl pin num
+            
 endmenu

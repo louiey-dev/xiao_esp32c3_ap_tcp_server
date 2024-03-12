@@ -16,7 +16,7 @@
 
 // #include "bsp_rtc_pcf8563.h"
 
-#define BSP_PRD_DEFAULT_TICK  1000
+#define BSP_PRD_DEFAULT_TICK  100
 
 
 typedef struct BSP_S

@@ -41,8 +41,9 @@ static void periodic_task(void *pvParameters)
     while (1)
     {
         ESP_LOGI(TAG, "PRD checking...%d", count++);
-        vTaskDelay(g_Bsp.prdTick / 10);
+        vTaskDelay(g_Bsp.prdTick);
 
+#if 0
         if(lcdFlag == 0)
         {
             bsp_lcd_ssd1306_init();
@@ -67,6 +68,7 @@ static void periodic_task(void *pvParameters)
                 lcdFlag = 3;
             }
         }
+#endif
     }
 }
 

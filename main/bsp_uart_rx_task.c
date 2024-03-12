@@ -46,7 +46,7 @@ static void uart_event_task(void *pvParameters)
                 case UART_DATA:
                     // ESP_LOGI(TAG, "[UART DATA]: %c", *dtmp);
                     uart_read_bytes(EX_UART_NUM, dtmp, event.size, portMAX_DELAY);
-                    ESP_LOGI(TAG, "[UART DATA]: %s", dtmp);
+                    ESP_LOGI(TAG, "[UART DATA]: %s, %d", dtmp, event.size);
                     uart_write_bytes(EX_UART_NUM, (const char*) dtmp, event.size);
                     break;
                 //Event of HW FIFO overflow detected

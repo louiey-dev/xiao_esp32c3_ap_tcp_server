@@ -129,7 +129,7 @@ static CliJte cliCommandTable [] =
       &cliCommandInterpreter
     },
     { "lcd_str",
-      "lcd_str hello",
+      "lcd_str 0 hello",
       "LCD prints string",
       CLI_CMD_LCD_WRITE_STR,
       3,
@@ -165,7 +165,7 @@ static CliJte cliCommandTable [] =
       &cliCommandInterpreter
     },
     { "lcd_str3",
-      "lcd_str3 hello",
+      "lcd_str3 3 hello",
       "LCD prints string with x3 font",
       CLI_CMD_LCD_WRITE_STR_X3,
       3,

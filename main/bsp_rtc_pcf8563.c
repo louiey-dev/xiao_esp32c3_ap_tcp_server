@@ -351,9 +351,9 @@ int bsp_rtc_pcf8563_init(uint8_t mode)
 		// configure i2c
 		i2c_config_t conf = {0};
 		conf.mode = I2C_MODE_MASTER;
-		conf.sda_io_num = 6;
+		conf.sda_io_num = CONFIG_ESP_I2C_SDA_PIN;
 		conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-		conf.scl_io_num = 7;
+		conf.scl_io_num = CONFIG_ESP_I2C_SCL_PIN;
 		conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
 		conf.master.clk_speed = 400000;
 		esp_err_t ret = i2c_param_config(I2C_NUM_0, &conf);

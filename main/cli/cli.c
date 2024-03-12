@@ -431,9 +431,10 @@ static void cliHelp (CliJte* jte)
 
 size_t dbgGetString(char *pbLine, unsigned int cbLine) 
 {
+    // if (fgets(pbLine, 100, stdin)) {
     if (gets(pbLine)) {
 	// if (fgets(pbLine, 100, stdin)) {
-		//pbLine[strlen(pbLine)-1] = '\0';
+		// pbLine[strlen(pbLine)-1] = '\0';
         return (strlen(pbLine));
     }
     return 0;

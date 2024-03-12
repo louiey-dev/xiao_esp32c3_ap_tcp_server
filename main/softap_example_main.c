@@ -115,7 +115,8 @@ void app_main(void)
 
     //
     bsp_gpio_init();
-    
+
     //
     cliInit();
+    // cli_task_init();
 }
