@@ -31,7 +31,7 @@ SSD1306_t g_lcd = {0};
 */
 int bsp_lcd_ssd1306_init(void)
 {    
-    i2c_master_init(&g_lcd, 6, 7, -1);
+    i2c_master_init(&g_lcd, CONFIG_ESP_I2C_SDA_PIN, CONFIG_ESP_I2C_SCL_PIN, -1);
 
     ESP_LOGI(TAG, "LCD Panel is %dx%d", LCD_WIDTH, LCD_HEIGHT);
 	ssd1306_init(&g_lcd, LCD_WIDTH, LCD_HEIGHT);
