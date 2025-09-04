@@ -21,6 +21,34 @@ You can get all the informations via "?"</br>
 ESP platform has an issue when user use gets API so cliTask cannot use here.</br>
 Instead of cliTask, calls cliLineParser to parse messages from wifi network.</br>
 
+### Configure the project
+
+Open the project configuration menu (`idf.py menuconfig`).
+
+In the `Example Configuration` menu:
+
+* Set the Wi-Fi configuration.
+    * Set `WiFi SSID`.
+    * Set `WiFi Password`.
+* Set peripheral port number according to your ESP32 chip
+    * ESP_PWM_BUZZER_PIN
+      * C3 : 5
+    * ESP_GPIO_IN_INT_PIN
+      * C3 : 3
+    * ESP_UART_NUM
+      * C3 : 0
+    * ESP_UART_TXD_PIN
+      * C3 : 21
+    * ESP_UART_RXD_PIN
+      * C3 : 20
+    * ESP_I2C_SDA_PIN
+      * C3 : 6
+    * ESP_I2C_SCL_PIN
+      * C3 : 7
+
+Optional: If you need, change the other options according to your requirements.
+
+
 ## Feature
 - tcp_server
   - tcp_server_task
@@ -56,7 +84,7 @@ idf.py set-target esp32c3 </br>
 idf.py menuconfig </br>
 idf.py build </br>
 idfx flash COM5 </br>
-
+idf.py -p ttyACM0 flash</br>
 ![Alt text](xiao-esp32c3.jpg)
 
 See the Getting Started Guide for all the steps to configure and use the ESP-IDF to build projects.
