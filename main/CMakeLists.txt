@@ -12,6 +12,7 @@ idf_component_register(SRCS     "cli/cli.c"
                                 "bsp.c"
                                 "bsp_gpio.c"
                                 "bsp_buzzer_pwm.c"
+                                "ble_init.c"
                     INCLUDE_DIRS "."
                     INCLUDE_DIRS "../"
                     )

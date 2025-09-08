@@ -4,12 +4,12 @@
 			"path": ".."
 		},
 		{
-			"path": "../../../../esp/esp-idf"
+			"path": "../../../../esp/v5.4.1/esp-idf/examples"
 		}
 	],
 	"settings": {
 		"files.associations": {
-			"bsp_uart.h": "c"
+			"ble_spp_server_demo.h": "c"
 		}
 	}
 }

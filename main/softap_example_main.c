@@ -33,6 +33,8 @@
 
 static const char *TAG = "wifi softAP";
 
+extern void ble_init(void);
+
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
                                     int32_t event_id, void* event_data)
 {
@@ -97,9 +99,20 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
+    /********************************************/
+    // WiFi configure
+    /********************************************/
     ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
     wifi_init_softap();
+    /********************************************/
 
+    /********************************************/
+    // BT configure
+    /********************************************/
+// #ifdef CONFIG_BT_ENABLED
+    ble_init();
+// #endif
+    /********************************************/
     //
     bsp_init(NULL);
     
@@ -107,8 +120,8 @@ void app_main(void)
     bsp_tcp_server_task_init();
 
     //
-    bsp_uart_init(UART_NUM_0);
-    bsp_uart_rx_task_init();
+    // bsp_uart_init(UART_NUM_0);
+    // bsp_uart_rx_task_init();
 
     //
     bsp_periodic_task_init();

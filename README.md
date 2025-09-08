@@ -72,6 +72,10 @@ Optional: If you need, change the other options according to your requirements.
 - user config menuconfig example configuration</br>
 ![Alt text](menuconfig.png)
 </br>
+- BLE spp server feature added
+  - connect to "nimble-ble-spp-svr"
+  - Could connect via phone@nordic_connect
+  - Could communicate between kit and phone
 
 ## Build and Flash
 
