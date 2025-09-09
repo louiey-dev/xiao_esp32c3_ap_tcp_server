@@ -420,8 +420,7 @@ static void ble_spp_uart_init(void)
 }
 
 
-void
-ble_init(void)
+void ble_init(void)
 {
     int rc;
     esp_err_t ret;
