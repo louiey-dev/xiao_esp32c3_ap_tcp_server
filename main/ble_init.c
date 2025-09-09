@@ -265,13 +265,39 @@ void ble_spp_server_host_task(void *param)
 /* Callback function for custom service */
 static int  ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg)
 {
+    // MODLOG_DFLT(INFO, "[ble_svc_gatt_handler] op %d, uuid 0x%x, offset %d", ctxt->op, ctxt->dsc->uuid->type, ctxt->offset);
+    MODLOG_DFLT(INFO, "[ble_svc_gatt_handler] conn_handle %x, attr_handle 0x%x", conn_handle, attr_handle);
+    
     switch (ctxt->op) {
     case BLE_GATT_ACCESS_OP_READ_CHR:
-        MODLOG_DFLT(INFO, "Callback for read");
+        MODLOG_DFLT(INFO, "Callback for read, %d", ctxt->om->om_len);
+        for(int i = 0; i < ctxt->om->om_len; i++) {
+            MODLOG_DFLT(INFO, "Read value 0x%x ", *((uint8_t*) ctxt->om->om_data + i));
+            MODLOG_DFLT(INFO, "Callback for read, attr_handle 0x%04x", attr_handle);
+            if (attr_handle == ble_spp_svc_gatt_read_val_handle) {
+                const char *read_data = "Hello from server";
+                int rc = os_mbuf_append(ctxt->om, read_data, strlen(read_data));
+                return (rc == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
+            }
+        }
         break;
 
     case BLE_GATT_ACCESS_OP_WRITE_CHR:
-        MODLOG_DFLT(INFO, "Data received in write event,conn_handle = %x,attr_handle = %x", conn_handle, attr_handle);
+        MODLOG_DFLT(INFO, "Data received in write event,conn_handle = 0x%x,attr_handle = 0x%x", conn_handle, attr_handle);
+        MODLOG_DFLT(INFO, "Write Char, %d, %s", ctxt->om->om_len, ctxt->om->om_data);
+        for(int i = 0; i < ctxt->om->om_len; i++) {
+            MODLOG_DFLT(INFO, "WR 0x%x ", *((uint8_t*) ctxt->om->om_data + i));            
+        }
+        break;
+
+    case BLE_GATT_ACCESS_OP_READ_DSC:
+        MODLOG_DFLT(INFO, "BLE_GATT_ACCESS_OP_READ_DSC");
+        MODLOG_DFLT(INFO, "Callback for read descriptor, attr_handle 0x%04x", attr_handle);
+        break;
+
+    case BLE_GATT_ACCESS_OP_WRITE_DSC:
+        MODLOG_DFLT(INFO, "BLE_GATT_ACCESS_OP_WRITE_DSC");
+        MODLOG_DFLT(INFO, "Callback for write descriptor, attr_handle 0x%04x", attr_handle);
         break;
 
     default:
