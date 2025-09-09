@@ -24,7 +24,9 @@ static uint8_t own_addr_type;
 int gatt_svr_register(void);
 QueueHandle_t spp_common_uart_queue = NULL;
 static bool conn_handle_subs[CONFIG_BT_NIMBLE_MAX_CONNECTIONS + 1];
+
 static uint16_t ble_spp_svc_gatt_read_val_handle;
+static uint16_t ble_spp_svc_gatt_temp_val_handle;
 
 void ble_store_config_init(void);
 
@@ -107,9 +109,11 @@ ble_spp_server_advertise(void)
     fields.name_is_complete = 1;
 
     fields.uuids16 = (ble_uuid16_t[]) {
-        BLE_UUID16_INIT(BLE_SVC_SPP_UUID16)
+        BLE_UUID16_INIT(BLE_SVC_SPP_UUID16),
+        // BLE_UUID16_INIT(BLE_SVC_SPP_TEMP_UUID16),
     };
     fields.num_uuids16 = 1;
+    // fields.num_uuids16 = 2;
     fields.uuids16_is_complete = 1;
 
     rc = ble_gap_adv_set_fields(&fields);
@@ -270,23 +274,34 @@ static int  ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, str
     
     switch (ctxt->op) {
     case BLE_GATT_ACCESS_OP_READ_CHR:
-        MODLOG_DFLT(INFO, "Callback for read, %d", ctxt->om->om_len);
-        for(int i = 0; i < ctxt->om->om_len; i++) {
-            MODLOG_DFLT(INFO, "Read value 0x%x ", *((uint8_t*) ctxt->om->om_data + i));
-            MODLOG_DFLT(INFO, "Callback for read, attr_handle 0x%04x", attr_handle);
-            if (attr_handle == ble_spp_svc_gatt_read_val_handle) {
-                const char *read_data = "Hello from server";
-                int rc = os_mbuf_append(ctxt->om, read_data, strlen(read_data));
-                return (rc == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
-            }
+        if (attr_handle == ble_spp_svc_gatt_read_val_handle) {
+            const char *read_data = "Hello from SPP";
+            int rc = os_mbuf_append(ctxt->om, read_data, strlen(read_data));
+            return (rc == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
+        } 
+        
+        if (attr_handle == ble_spp_svc_gatt_temp_val_handle) {
+            /* Example: send a dummy temperature value */
+            char *temp = "25.5C";
+            MODLOG_DFLT(INFO, "Reading temperature: %s", temp);
+            int rc = os_mbuf_append(ctxt->om, temp, strlen(temp));
+            return (rc == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         }
         break;
 
     case BLE_GATT_ACCESS_OP_WRITE_CHR:
-        MODLOG_DFLT(INFO, "Data received in write event,conn_handle = 0x%x,attr_handle = 0x%x", conn_handle, attr_handle);
-        MODLOG_DFLT(INFO, "Write Char, %d, %s", ctxt->om->om_len, ctxt->om->om_data);
-        for(int i = 0; i < ctxt->om->om_len; i++) {
-            MODLOG_DFLT(INFO, "WR 0x%x ", *((uint8_t*) ctxt->om->om_data + i));            
+        if (attr_handle == ble_spp_svc_gatt_read_val_handle) {
+            MODLOG_DFLT(INFO, "Write to SPP char, len %d", ctxt->om->om_len);
+            for(int i = 0; i < ctxt->om->om_len; i++) {
+                MODLOG_DFLT(INFO, "WR spp 0x%x ", *((uint8_t*) ctxt->om->om_data + i));            
+            }
+        }
+        
+        if (attr_handle == ble_spp_svc_gatt_temp_val_handle) {
+            MODLOG_DFLT(INFO, "Write to Temp char, len %d", ctxt->om->om_len);
+            for(int i = 0; i < ctxt->om->om_len; i++) {
+                MODLOG_DFLT(INFO, "WR temp 0x%x ", *((uint8_t*) ctxt->om->om_data + i));            
+            }
         }
         break;
 
@@ -320,7 +335,16 @@ static const struct ble_gatt_svc_def new_ble_svc_gatt_defs[] = {
                 .access_cb = ble_svc_gatt_handler,
                 .val_handle = &ble_spp_svc_gatt_read_val_handle,
                 .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_WRITE | BLE_GATT_CHR_F_NOTIFY,
-            }, {
+            }, 
+            {
+                // 0, /* No more characteristics */
+                /* New characteristic for Temperature */
+                .uuid = BLE_UUID16_DECLARE(BLE_SVC_SPP_TEMP_CHR_UUID16),
+                .access_cb = ble_svc_gatt_handler,
+                .val_handle = &ble_spp_svc_gatt_temp_val_handle,
+                .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_WRITE | BLE_GATT_CHR_F_NOTIFY,
+            },
+            {
                 0, /* No more characteristics */
             }
         },
@@ -330,8 +354,7 @@ static const struct ble_gatt_svc_def new_ble_svc_gatt_defs[] = {
     },
 };
 
-static void
-gatt_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
+static void gatt_svr_register_cb(struct ble_gatt_register_ctxt *ctxt, void *arg)
 {
     char buf[BLE_UUID_STR_LEN];
 
