@@ -37,3 +37,5 @@
 
 #define CLI_CMD_PWM_INIT         (CLI_CMD_OFFSET + 50)
 #define CLI_CMD_PWM_SET_DUTY     (CLI_CMD_OFFSET + 51)
+
+#define CLI_CMD_ECHO_TO_BT       (CLI_CMD_OFFSET + 52)

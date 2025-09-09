@@ -425,6 +425,27 @@ void ble_server_uart_task(void *pvParameters)
     }
     vTaskDelete(NULL);
 }
+
+int ble_send_notify_to_host(uint8_t *ntf, int size){
+    for (int i = 0; i <= CONFIG_BT_NIMBLE_MAX_CONNECTIONS; i++) {
+        /* Check if client has subscribed to notifications */
+        if (conn_handle_subs[i]) {
+            struct os_mbuf *txom;
+            txom = ble_hs_mbuf_from_flat(ntf, size);
+            int rc = ble_gatts_notify_custom(i, ble_spp_svc_gatt_read_val_handle,
+                                            txom);
+            if (rc == 0) {
+                MODLOG_DFLT(INFO, "ble_send_notify_to_host sent successfully");
+                return 0;
+            } else {
+                MODLOG_DFLT(INFO, "Error in sending ble_send_notify_to_host rc = %d", rc);
+                return -1;
+            }
+        }
+    }
+    return 0;
+}
+
 static void ble_spp_uart_init(void)
 {
     uart_config_t uart_config = {

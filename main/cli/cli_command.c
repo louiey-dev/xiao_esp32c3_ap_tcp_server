@@ -28,6 +28,8 @@ static const char *TAG = "cli";
 
 extern BSP_ST g_Bsp;
 
+extern int ble_send_notify_to_host(uint8_t *ntf, int size);
+
 /**************************** PRIVATE FUNCTION DEFINITIONS *******************/
 static CliJte cliCommandTable [] =
 {
@@ -192,6 +194,15 @@ static CliJte cliCommandTable [] =
       0,
       &cliCommandInterpreter
     },
+    { "echo",
+      "echo good-day",
+      "echos given data to bluetooth",
+      CLI_CMD_ECHO_TO_BT,
+      2,
+      NULL,
+      0,
+      &cliCommandInterpreter
+    },
     //////////////////////////////////////////////////////
 };
 
@@ -214,7 +225,7 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
     uint8_t u8;
     uint16_t u16;
     uint32_t u32;
-
+    int ret;
     // printf("cliCommandInterpreter cmd %d argc %d argv %s\n", command, argc, *argv);
 
     switch (command)
@@ -335,6 +346,17 @@ static Bool cliCommandInterpreter (int command, int argc, char** argv)
         ESP_LOGI(TAG, "Buzzer duty set to %d\n", (int)u32);
         break;
         /********************************************************/
+
+        case CLI_CMD_ECHO_TO_BT:
+        // echo to bluetooth
+        ret = ble_send_notify_to_host((uint8_t*)argv[1], strlen(argv[1]));
+        if(ret == 0){
+          ESP_LOGI(TAG, "CLI_CMD_ECHO_TO_BT echos to %s\n", argv[1]);
+        }else{
+          ESP_LOGI(TAG, "CLI_CMD_ECHO_TO_BT error %d\n", ret);
+        }        
+        break;
+
         default:
         // Unknown command! We should never get here...
         ESP_LOGI(TAG, "Unknown command, %d\n", command);
