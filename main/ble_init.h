@@ -23,6 +23,14 @@ extern "C" {
 #define BLE_SVC_SPP_CHR_UUID16                              0xABF1
 #define BLE_SVC_SPP_TEMP_CHR_UUID16                         0xABF5
 
+
+/* 16 Bit Battery Service UUID */
+#define BLE_SVC_BATT_UUID16                                  0x180F
+
+/* 16 Bit SPP Service Characteristic UUID */
+#define BLE_SVC_BATT_LEVEL_CHR_UUID16                              0x2A19
+
+
 struct ble_hs_cfg;
 struct ble_gatt_register_ctxt;
 
