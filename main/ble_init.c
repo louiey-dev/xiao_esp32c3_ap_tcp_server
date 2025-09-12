@@ -27,7 +27,7 @@ static bool conn_handle_subs[CONFIG_BT_NIMBLE_MAX_CONNECTIONS + 1];
 
 static uint16_t ble_spp_svc_gatt_read_val_handle;
 static uint16_t ble_spp_svc_gatt_temp_val_handle;
-static uint16_t ble_spp_svc_gatt_batt_val_handle;
+static uint16_t ble_batt_svc_gatt_read_val_handle;
 
 void ble_store_config_init(void);
 
@@ -287,7 +287,7 @@ static int  ble_svc_gatt_handler(uint16_t conn_handle, uint16_t attr_handle, str
             return (rc == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
         }
 
-        if (attr_handle == ble_spp_svc_gatt_batt_val_handle) {
+        if (attr_handle == ble_batt_svc_gatt_read_val_handle) {
             /* Example: send a dummy battery level value */
             char *batt = "Batt 3.42Vdc";
             MODLOG_DFLT(INFO, "Reading battery level: %s", batt);
@@ -365,8 +365,8 @@ static const struct ble_gatt_svc_def new_ble_svc_gatt_defs[] = {
                 /* Support Battery service */
                 .uuid = BLE_UUID16_DECLARE(BLE_SVC_BATT_LEVEL_CHR_UUID16),
                 .access_cb = ble_svc_gatt_handler,
-                .val_handle = &ble_spp_svc_gatt_batt_val_handle,
-                .flags = BLE_GATT_CHR_F_READ,
+                .val_handle = &ble_batt_svc_gatt_read_val_handle,
+                .flags = BLE_GATT_CHR_F_READ | BLE_GATT_CHR_F_NOTIFY,
             }, 
             {
                 0, /* No more characteristics */
